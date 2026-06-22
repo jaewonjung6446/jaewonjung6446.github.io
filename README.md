@@ -1,0 +1,7 @@
+# jaewonjung6446.github.io
+
+정재원 GitHub Pages 포트폴리오입니다.
+
+- 공개 프로젝트는 GitHub 링크를 제공합니다.
+- 비공개 또는 저장소 매핑이 확정되지 않은 프로젝트는 공개 가능한 코드 샘플과 예시 이미지만 제공합니다.
+- 정적 HTML/CSS/JS로 구성되어 GitHub Pages 기본 설정에서 바로 배포됩니다.
