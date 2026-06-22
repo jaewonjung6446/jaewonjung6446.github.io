@@ -149,6 +149,13 @@ h3 {
   line-height: 1.75;
 }
 
+.intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
 .quick-facts {
   display: grid;
   gap: 12px;
@@ -190,6 +197,43 @@ h3 {
   margin-bottom: 24px;
 }
 
+.interaction-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.segmented,
+.filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.segment-button,
+.filter-button {
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: #404040;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.segment-button.is-active,
+.filter-button.is-active {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -205,6 +249,17 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 8px;
   box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, opacity 320ms ease;
+}
+
+.project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 50px rgba(23, 23, 23, 0.12);
+}
+
+.project-card.is-hidden {
+  display: none;
 }
 
 .project-card img {
@@ -273,9 +328,12 @@ h3 {
   padding: 8px 12px;
   border: 1px solid var(--ink);
   border-radius: 6px;
+  background: transparent;
   text-decoration: none;
   font-size: 14px;
   font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .primary-link {
@@ -314,6 +372,20 @@ h3 {
   line-height: 1.65;
 }
 
+.sample-code {
+  min-width: 0;
+  background: #171717;
+  color: #f5f5f0;
+}
+
+.sample-code summary {
+  min-height: 46px;
+  padding: 14px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  font-weight: 800;
+}
+
 pre {
   margin: 0;
   padding: 22px;
@@ -326,6 +398,115 @@ pre {
 
 code {
   font-family: "Cascadia Mono", "Consolas", monospace;
+}
+
+.reveal {
+  opacity: 1;
+  transform: translateY(12px);
+}
+
+.reveal.is-visible {
+  transform: translateY(0);
+}
+
+.modal-open {
+  overflow: hidden;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: none;
+  place-items: center;
+  padding: 22px;
+  background: rgba(17, 17, 17, 0.56);
+}
+
+.modal-backdrop[aria-hidden="false"] {
+  display: grid;
+}
+
+.project-modal {
+  position: relative;
+  width: min(980px, 100%);
+  max-height: min(760px, calc(100vh - 44px));
+  overflow: auto;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+}
+
+.modal-grid img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  object-fit: cover;
+  background: #e8ece8;
+}
+
+.modal-copy {
+  padding: 34px;
+}
+
+.modal-copy p {
+  color: #474747;
+  line-height: 1.65;
+}
+
+.modal-facts {
+  display: grid;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.modal-facts div {
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+
+.modal-facts dt {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.modal-facts dd {
+  margin: 5px 0 0;
+  color: #3e3e3e;
+  line-height: 1.6;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .contact-section {
@@ -356,7 +537,8 @@ code {
 @media (max-width: 920px) {
   .intro-section,
   .sample-item,
-  .contact-section {
+  .contact-section,
+  .modal-grid {
     grid-template-columns: 1fr;
   }
 
@@ -372,6 +554,11 @@ code {
   .sample-copy {
     border-right: 0;
     border-bottom: 1px solid var(--line);
+  }
+
+  .modal-grid img {
+    min-height: 260px;
+    aspect-ratio: 16 / 9;
   }
 }
 
@@ -400,6 +587,25 @@ code {
 
   .project-grid {
     grid-template-columns: 1fr;
+  }
+
+  .interaction-bar,
+  .segmented,
+  .filter-group {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .modal-backdrop {
+    padding: 10px;
+  }
+
+  .modal-copy {
+    padding: 22px;
+  }
+
+  .project-modal {
+    max-height: calc(100vh - 20px);
   }
 
   main {
