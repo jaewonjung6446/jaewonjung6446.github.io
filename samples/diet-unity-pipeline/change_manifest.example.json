@@ -1,0 +1,19 @@
+{
+  "baseSnapshotHash": "example-snapshot-hash-2026-06-29",
+  "changes": [
+    {
+      "changeId": "change-001",
+      "table": "MasterEncounter",
+      "key": "guest_ryu_day2_event01",
+      "field": "priority",
+      "value": "20"
+    },
+    {
+      "changeId": "change-002",
+      "table": "Item",
+      "key": "dish_spicy_stew",
+      "field": "displayName",
+      "value": "매운 찌개"
+    }
+  ]
+}
