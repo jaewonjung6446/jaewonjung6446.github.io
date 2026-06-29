@@ -1,0 +1,14 @@
+{
+  "snapshotHash": "example-snapshot-hash-2026-06-29",
+  "exportedAtUtc": "2026-06-29T00:00:00Z",
+  "tables": [
+    {
+      "name": "MasterEncounter",
+      "rowCount": 3
+    },
+    {
+      "name": "Item",
+      "rowCount": 5
+    }
+  ]
+}
