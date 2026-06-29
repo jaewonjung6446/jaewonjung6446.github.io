@@ -1,173 +1,130 @@
 const projects = [
   {
-    title: "AXOL v2",
-    image: "assets/axol-v2.png",
-    visibility: "Private",
-    categories: ["ai", "tooling", "sample"],
-    stack: ["Python", "LLM workflow", "Benchmark"],
-    summary: "반복되는 에이전트 작업에서 확신 높은 다음 작업만 빠른 경로로 처리하고, 불확실하면 fallback 모델로 넘기는 추론 가속 실험입니다.",
-    role: "라우팅/기억/벤치마크 구조 설계",
-    clientFocus: "클라이언트 핵심 프로젝트가 아니라, 개발 자동화와 AI 워크플로우 이해도를 보여주는 보조 연구 항목입니다.",
-    pmFocus: "실험 목표, 측정 지표, fallback 조건을 분리해 불확실한 연구를 관리 가능한 검증 단위로 나눴습니다.",
-    problem: "반복되는 로컬 에이전트 흐름에서 매번 큰 모델을 호출하면 시간과 비용이 커지는 문제가 있었습니다.",
-    implementation: "confidence gate, cumulative router, benchmark harness, emit/verify/fallback 결정을 구성했습니다.",
-    result: "프로토타입 벤치마크 기반으로 반복 워크플로우에서 fast-path 가능성을 검증했습니다.",
-    link: "",
-    sampleLabel: "실제 코드 발췌: CumulativeAXOLRouter",
-    codeSample: `class CumulativeAXOLRouter:
-    """Routes confident next-op transitions through AXOL memory."""
-
-    def route_case(self, case, fallback_ops_fn):
-        prefix = tuple()
-        predicted = []
-        fallback_ops = None
-
-        for _ in range(self.config.max_steps):
-            fast = self.try_fast_next(case.text, prefix)
-            if fast is not None:
-                decision = fast
-            else:
-                if fallback_ops is None:
-                    fallback_ops = fallback_ops_fn()
-                next_op = fallback_ops[len(prefix)]
-                decision = FastPathDecision(
-                    source="TRANSFORMER_FALLBACK",
-                    next_op=next_op,
-                    confidence=0.0,
-                )
-            predicted.append(decision.next_op)`
-  },
-  {
-    title: "이자카야 이자코자",
+    title: "이자카야 이자코자 · Gameplay System Samples",
     image: "assets/izakoza.png",
-    visibility: "Private",
+    visibility: "Sample-only",
     categories: ["client", "pm", "tooling", "sample"],
-    stack: ["Unity", "C#", "Editor tooling"],
-    summary: "이자카야 운영과 카드 전투를 잇는 Unity 프로젝트입니다. 데이터/에셋 편집 병목을 줄이기 위해 디자이너 파이프라인과 검증 도구를 구축했습니다.",
-    role: "게임 시스템 구현, 데이터/에셋 파이프라인 개선",
-    clientFocus: "카드 전투, 운영 UI, 데이터 기반 콘텐츠 흐름을 Unity 클라이언트 구조 안에서 연결했습니다.",
-    pmFocus: "개발자에게 몰리던 XML 작성, 에셋 배치, 검증 작업을 외부 편집/검증 흐름으로 분리했습니다.",
-    problem: "데이터 작성과 리소스 배치가 Unity Editor와 개발자에게 집중되어 병렬 작업이 어려웠습니다.",
-    implementation: "Unity Editor Extension, XML/JSON export-import, React 편집 화면, import validator를 구성했습니다.",
-    result: "반복 입력과 에셋 배치 병목을 줄이고, 개발자와 비개발자가 같은 데이터 흐름에서 작업할 수 있는 기반을 만들었습니다.",
-    link: "",
-    sampleLabel: "실제 코드 발췌: DesignerAssetPipeline",
-    codeSample: `[MenuItem("Izakoza/Designer Pipeline/Apply Request JSON")]
-private static void ApplyRequestJsonMenu()
+    stack: ["Unity", "C#", "Save/Load", "Gameplay System"],
+    summary: "상용 예정 Unity/Spine 기반 로그라이트 덱빌딩 프로젝트에서 담당한 세이브/로드, 상점·인벤토리, 인카운터·보상, 전투 진입 연결부를 공개 가능한 형태로 축약한 샘플입니다.",
+    role: "Unity 클라이언트 개발, 게임플레이 시스템 구현, 기능 통합 조율",
+    clientFocus: "PlayerData 기반 진행 상태 저장, 구매/보상/전투 진입 연결부, 저장 실패 rollback처럼 플레이 흐름을 보호하는 시스템 구현 역량을 보여줍니다.",
+    pmFocus: "기획 데이터, 런타임 저장 데이터, UI 흐름, 보상 처리, 전투 진입 연결부가 어긋나지 않도록 통합 기준을 정리했습니다.",
+    problem: "상점 구매, 이벤트 보상, 전투 진입처럼 서로 다른 기능이 같은 플레이어 진행 상태를 안전하게 공유해야 했습니다.",
+    implementation: "정적 XML/JSON 데이터와 PlayerData 저장 데이터를 분리하고, 변경 전 snapshot을 만든 뒤 저장 성공 후에만 구매·보상 결과를 확정하는 흐름으로 설계했습니다.",
+    result: "세이브/로드, 상점·인벤토리, 인카운터·보상, pending combat 진입 흐름을 하나의 플레이 루프로 연결했습니다.",
+    link: "https://github.com/jaewonjung6446/jaewonjung6446.github.io/tree/main/samples/izakoza-gameplay",
+    sampleLabel: "공개용 구조 샘플: PlayerData transaction",
+    codeSample: `public SaveResult RunTransaction(string reason, Action<PlayerData> applyChanges)
 {
-    if (!File.Exists(RequestPath))
+    PlayerData snapshot = current.Clone();
+
+    try
     {
-        EnsureParentDirectory(RequestPath);
-        WriteJson(RequestPath, DesignerAssetPipelineRequestManifest.CreateExample());
-        AssetDatabase.Refresh();
-        Debug.LogWarning($"request 파일이 없어 예시 파일을 생성했습니다: {RequestPath}");
-        return;
+        applyChanges.Invoke(current);
+        current.Normalize();
+    }
+    catch (Exception ex)
+    {
+        current = snapshot;
+        return SaveResult.Fail($"Change failed: {reason} / {ex.Message}");
     }
 
-    DesignerAssetPipelineRequestManifest requestManifest =
-        ReadJson<DesignerAssetPipelineRequestManifest>(RequestPath);
-    DesignerAssetPipelineApplyReport report = ApplyRequests(requestManifest);
-    WriteJson(ReportPath, report);
-    AssetDatabase.SaveAssets();
-    AssetDatabase.Refresh();
+    SaveResult saveResult = store.Save(current);
+    if (saveResult.Success)
+        return saveResult;
+
+    current = snapshot;
+    return SaveResult.Fail($"Save failed and rolled back: {reason}");
 }`
   },
   {
-    title: "울려라! 판소리",
+    title: "울려라! 판소리 · Microgame Framework",
     image: "assets/pansori.png",
     visibility: "Sample-only",
     categories: ["client", "pm", "sample"],
-    stack: ["Unity", "Game jam", "Minigame architecture"],
-    summary: "40시간 게임잼에서 9개 미니게임과 연습 모드를 통합한 프로젝트입니다. 미니게임을 개별 씬이 아닌 프리팹 단위로 묶어 통합 비용을 줄였습니다.",
-    role: "개발 리드, 전체 구조, 에디터 도구, 미니게임 통합",
-    clientFocus: "미니게임을 prefab 단위로 통합해 GameManager가 로딩과 전환을 제어하는 클라이언트 구조를 만들었습니다.",
-    pmFocus: "개발 3명, 기획 1명, 아트 1명 팀에서 일정, 통합 기준, 작업 분담을 잡아 짧은 시간 안에 빌드를 완성했습니다.",
+    stack: ["Unity", "C#", "Game Jam", "Editor Tool"],
+    summary: "40시간 게임잼 우승 프로젝트에서 9개 미니게임과 연습 모드를 Prefab 기반 구조로 통합한 경험을 공개용 샘플로 정리했습니다.",
+    role: "개발 리드, 미니게임 통합 구조 설계, Editor Tool 구현",
+    clientFocus: "개별 미니게임은 자기 규칙에 집중하고, 실행·종료·결과 보고는 공통 manager가 처리하는 클라이언트 구조를 보여줍니다.",
+    pmFocus: "개발 3명, 기획 1명, 아트 1명 팀에서 제한 시간 안에 통합 가능한 구조와 작업 기준을 먼저 정했습니다.",
     problem: "약 40시간 안에 9개 미니게임과 연습 모드를 하나의 안정적인 플레이 흐름으로 통합해야 했습니다.",
-    implementation: "prefab 기반 미니게임 구조, GameManager 로딩 흐름, 신규 미니게임 코드/폴더 템플릿 생성 흐름을 구성했습니다.",
-    result: "통합 빌드를 완성하고 제4회 유니잼 with 컴투스에서 우승했습니다.",
-    link: "",
-    sampleLabel: "공개용 구조 샘플: 미니게임 프리팹 실행 흐름",
-    codeSample: `public interface IMinigame
+    implementation: "미니게임을 개별 씬이 아니라 Prefab 단위로 실행하고, 공통 lifecycle interface와 template creator로 통합 비용을 줄였습니다.",
+    result: "제4회 유니잼 with 컴투스 우승 프로젝트를 완성했습니다.",
+    link: "https://github.com/jaewonjung6446/jaewonjung6446.github.io/tree/main/samples/pansori-microgame-framework",
+    sampleLabel: "공개용 구조 샘플: 공통 미니게임 생명주기",
+    codeSample: `public abstract class MicrogameBase : MonoBehaviour, IMicrogame
 {
-    UniTask RunAsync(MinigameContext context, CancellationToken token);
-}
+    private bool ended;
+    public event Action<MicrogameResult> ResultReported;
 
-public sealed class MinigameFlow : MonoBehaviour
-{
-    [SerializeField] private Transform mount;
-
-    public async UniTask PlayAsync(MinigameDefinition definition)
+    public virtual void StartGame(MicrogameContext context)
     {
-        IMinigame game = Instantiate(definition.prefab, mount)
-            .GetComponent<IMinigame>();
+        ended = false;
+    }
 
-        await game.RunAsync(new MinigameContext(score, input, ui), destroyCancellationToken);
-        Destroy(((MonoBehaviour)game).gameObject);
+    protected void ReportResult(bool success)
+    {
+        if (ended) return;
+        ended = true;
+        ResultReported?.Invoke(new MicrogameResult(GameName, success));
     }
 }`
   },
   {
-    title: "2024 메타버스: 도란도란",
-    image: "assets/metaverse-2024.png",
+    title: "DIET · Unity Data Pipeline Sample",
+    image: "assets/izakoza.png",
+    visibility: "Sample-only",
+    categories: ["client", "pm", "tooling", "sample"],
+    stack: ["Unity", "C#", "XML/JSON", "Editor Tool"],
+    summary: "Unity 내부 XML/C# 데이터를 schema, relations, snapshot으로 export하고, 외부 변경 요청을 validate 후 apply하는 데이터·에셋 파이프라인 샘플입니다.",
+    role: "Unity 데이터·에셋 파이프라인 설계 및 구현",
+    clientFocus: "기획 데이터와 런타임 로딩 경로가 어긋나지 않도록 export/validate/apply 흐름과 XML adapter를 구성한 경험을 보여줍니다.",
+    pmFocus: "비개발자도 안전하게 데이터·에셋 작업에 참여할 수 있도록 작업 병목을 구조와 도구로 분리했습니다.",
+    problem: "마감 직전 XML 작성, 에셋 배치, 검증 작업이 Unity Editor와 특정 개발자에게 집중되는 문제가 있었습니다.",
+    implementation: "schema/relations/snapshot export, stale snapshot 검증, dry-run validate, apply/report 흐름을 Unity Editor 메뉴로 묶었습니다.",
+    result: "반복 데이터 입력과 배치 작업을 외부 편집·검증 흐름으로 분리할 수 있는 기반을 만들었습니다.",
+    link: "https://github.com/jaewonjung6446/jaewonjung6446.github.io/tree/main/samples/diet-unity-pipeline",
+    sampleLabel: "공개용 구조 샘플: stale snapshot validation",
+    codeSample: `if (manifest.baseSnapshotHash != current.snapshotHash)
+{
+    return new DietValidationReport
+    {
+        staleSnapshot = true,
+        rejectedCount = manifest.changes.Length,
+        message = "Export again before applying changes."
+    };
+}`
+  },
+  {
+    title: "unity-mcp",
+    image: "assets/super-light-brothers.png",
     visibility: "Public",
-    categories: ["client", "pm", "ai", "public"],
-    stack: ["Unity", "C#", "AI NPC", "TTS"],
-    summary: "AI와 TTS를 활용해 가상 섬에서 NPC와 대화하고 감정을 기록하는 메타버스 프로젝트입니다. 공개 저장소와 발표 자료가 연결되어 있습니다.",
-    role: "팀장, 개발 총괄, AI 인격체 구현, API 연동",
-    clientFocus: "Unity 클라이언트에서 AI NPC 대화, TTS 출력, 다이어리 기능 흐름을 하나의 체험으로 연결했습니다.",
-    pmFocus: "팀장으로 AI/API/클라이언트 작업 범위를 조율하고 발표 가능한 결과물 형태로 정리했습니다.",
-    problem: "가상 섬에서 NPC와 자연스럽게 대화하고 감정을 기록하는 경험을 구현해야 했습니다.",
-    implementation: "GPT 기반 대화 AI, TTS 연동, 다이어리 자동 생성 흐름, Unity 클라이언트 기능을 통합했습니다.",
-    result: "2024 메타버스 개발자 경진대회 공개 저장소와 발표 자료로 정리했습니다.",
-    link: "https://github.com/jaewonjung6446/metaverse2024",
+    categories: ["tooling", "public"],
+    stack: ["Unity", "C#", "TypeScript", "MCP"],
+    summary: "Unity Editor와 MCP client를 Node.js MCP Server, WebSocket, C# Editor package로 연결하는 Editor automation bridge입니다.",
+    role: "Unity Editor automation 구조 설계 및 구현",
+    clientFocus: "Unity Editor 상태 조회, 씬/에셋/UI/QA 자동화처럼 개발 생산성을 높이는 툴링 역량을 보여줍니다.",
+    pmFocus: "반복 QA와 에디터 조작을 도구화해 팀의 확인 비용을 줄이는 방향의 워크플로우 설계 경험입니다.",
+    problem: "Unity Editor 작업과 외부 agent workflow 사이의 연결 지점이 필요했습니다.",
+    implementation: "STDIO 기반 MCP server와 Unity Editor WebSocket bridge, C# tool handler 구조를 구성했습니다.",
+    result: "Unity Editor automation을 위한 공개 저장소로 정리했습니다.",
+    link: "https://github.com/jaewonjung6446/unity-mcp",
     codeSample: ""
   },
   {
-    title: "여우비",
-    image: "assets/yeoubi.png",
-    visibility: "Sample-only",
-    categories: ["client", "sample"],
-    stack: ["Unity", "Narrative interaction", "Prototype"],
-    summary: "저장소 공개 여부가 확인되지 않은 프로젝트라 공개 링크 없이 예시 이미지와 코드 샘플만 배치했습니다. 감정/날씨 상태를 플레이 흐름과 연결하는 형태로 소개합니다.",
-    role: "프로토타입 구조 설계",
-    clientFocus: "상태 기반 연출과 대화 톤을 클라이언트 흐름에 연결하는 프로토타입 구조를 강조합니다.",
-    pmFocus: "공개 근거가 제한된 프로젝트이므로 일정/성과보다 공개 가능한 샘플 단위로만 보수적으로 소개합니다.",
-    problem: "감정 상태와 날씨 연출을 플레이 장면의 분위기 변화로 연결해야 했습니다.",
-    implementation: "WeatherMood 상태에 따라 비주얼 레이어, 조명, 대화 톤을 전환하는 구조로 정리했습니다.",
-    result: "공개 저장소 없이 샘플 코드와 예시 이미지 중심으로 노출합니다.",
-    link: "",
-    sampleLabel: "공개용 샘플: 상태 기반 장면 전환",
-    codeSample: `public enum WeatherMood
-{
-    Clear,
-    Drizzle,
-    Sunshower
-}
-
-public sealed class MoodSceneDirector : MonoBehaviour
-{
-    public void Apply(WeatherMood mood)
-    {
-        rainLayer.SetActive(mood != WeatherMood.Clear);
-        lightRig.intensity = mood == WeatherMood.Sunshower ? 1.2f : 0.72f;
-        dialogue.SetTone(mood.ToString());
-    }
-}`
-  },
-  {
-    title: "Super Light Brothers",
-    image: "assets/super-light-brothers.png",
+    title: "도란도란 · Metaverse 2024",
+    image: "assets/metaverse-2024.png",
     visibility: "Public",
-    categories: ["client", "public"],
-    stack: ["Unity", "Team project", "Light mechanic"],
-    summary: "현재 확인 가능한 공개 저장소 `UniLIght`와 연결해 둔 산학협력 프로젝트입니다. 빛을 핵심 키워드로 한 팀 프로젝트 항목으로 정리했습니다.",
-    role: "Unity 프로젝트 구현 참여",
-    clientFocus: "빛 기믹을 중심으로 한 Unity 팀 프로젝트 구현 경험을 보여주는 공개 항목입니다.",
-    pmFocus: "산학협력 프로젝트 맥락에서 팀 작업과 결과물 정리 경험을 보조적으로 보여줍니다.",
-    problem: "팀 프로젝트에서 빛을 핵심 상호작용 요소로 구현해야 했습니다.",
-    implementation: "Unity 프로젝트 구조 안에서 빛 기믹과 플레이 흐름을 연결하는 작업에 참여했습니다.",
-    result: "공개 저장소 `UniLIght`로 연결해 확인 가능한 프로젝트로 배치했습니다.",
-    link: "https://github.com/jaewonjung6446/UniLIght",
+    categories: ["client", "pm", "ai", "public"],
+    stack: ["Unity", "C#", "AI NPC", "STT/TTS"],
+    summary: "AI NPC, STT/GPT/TTS, 다이어리 기능을 Unity 클라이언트 안에서 하나의 대화 경험으로 연결한 메타버스 프로젝트입니다.",
+    role: "팀장, 개발 총괄, AI 인격체 구현, API 연동",
+    clientFocus: "Unity 클라이언트에서 음성 입력, AI 응답, TTS 출력, 대화 로그 기반 다이어리 흐름을 하나의 사용자 경험으로 연결했습니다.",
+    pmFocus: "AI/API/클라이언트/디자인/사운드 작업 범위를 발표 가능한 결과물 형태로 조율했습니다.",
+    problem: "NPC와 대화하고 감정을 기록하는 경험을 Unity 클라이언트 안에서 자연스럽게 이어야 했습니다.",
+    implementation: "AudioRecorder, STT, GPT, TTS, 다이어리 생성 흐름을 Unity UI 상태 전환과 연결했습니다.",
+    result: "2024 메타버스 개발자 경진대회 공개 저장소와 발표 자료로 정리했습니다.",
+    link: "https://github.com/jaewonjung6446/metaverse2024",
     codeSample: ""
   }
 ];
