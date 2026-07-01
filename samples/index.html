@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="정재원 Unity Gameplay & Client Programmer 공개 코드 샘플 허브">
+  <title>Code Samples | Jae Won Jung</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="홈으로 이동">
+      <span class="brand-mark">JW</span>
+      <span><strong>Jae Won Jung</strong><small>Unity · Gameplay · Client</small></span>
+    </a>
+    <nav class="top-nav" aria-label="주요 이동">
+      <a href="/">Home</a>
+      <a href="/resume/">Resume</a>
+      <a href="/portfolio/">Portfolio</a>
+      <a href="/github/">GitHub</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro-section" aria-labelledby="samples-title">
+      <div class="intro-copy">
+        <p class="eyebrow">Public code samples</p>
+        <h1 id="samples-title">비공개 프로젝트를 대체하는 검토용 구조 샘플</h1>
+        <p class="intro-lead">
+          상용/팀 프로젝트의 원본 코드와 리소스는 공개하지 않고, 채용 검토자가 구현 판단 기준을 볼 수 있도록 핵심 구조를 축약한 샘플을 정리합니다.
+          각 샘플은 문제, 설계 의도, 예외 처리, 검증 포인트가 함께 보이도록 작성합니다.
+        </p>
+      </div>
+      <dl class="quick-facts" aria-label="샘플 기준">
+        <div><dt>Scope</dt><dd>Public-safe architecture samples</dd></div>
+        <div><dt>Priority</dt><dd>Izakoza · DIET · Pansori</dd></div>
+        <div><dt>Review point</dt><dd>Implementation reasoning over asset volume</dd></div>
+      </dl>
+    </section>
+
+    <section class="sample-section" aria-labelledby="sample-list-title">
+      <div class="section-heading"><p class="eyebrow">Sample set</p><h2 id="sample-list-title">우선 공개할 샘플 3개</h2></div>
+      <div class="sample-list">
+        <article class="sample-item">
+          <div class="sample-copy">
+            <p class="eyebrow">1st priority</p>
+            <h3>Izakoza Gameplay Samples</h3>
+            <p>PlayerData transaction, safe save, shop/inventory rollback, encounter reward completion을 공개 가능한 형태로 분리합니다.</p>
+            <ul>
+              <li>저장 실패 시 snapshot rollback</li>
+              <li>.tmp/.bak 기반 파일 교체 저장</li>
+              <li>구매 검증 → 결제 → 지급 → 저장 확정 흐름</li>
+              <li>보상 중복 지급 방지와 완료 이력 관리</li>
+            </ul>
+            <a class="primary-link" href="/demo/izakoza/">요약 보기</a>
+          </div>
+        </article>
+        <article class="sample-item">
+          <div class="sample-copy">
+            <p class="eyebrow">2nd priority</p>
+            <h3>DIET Unity Data Pipeline Sample</h3>
+            <p>schema/relations/snapshot export, stale snapshot validation, dry-run validate, apply/report 흐름을 보여줍니다.</p>
+            <ul>
+              <li>Unity 내부 데이터를 외부 편집 계약으로 export</li>
+              <li>오래된 snapshot 기준 변경 요청 거절</li>
+              <li>Validate 후 Apply하는 Editor workflow</li>
+              <li>기존 XML 런타임 로딩 경로와 호환</li>
+            </ul>
+            <a class="primary-link" href="/demo/diet/">요약 보기</a>
+          </div>
+        </article>
+        <article class="sample-item">
+          <div class="sample-copy">
+            <p class="eyebrow">3rd priority</p>
+            <h3>Pansori Microgame Framework</h3>
+            <p>40시간 게임잼에서 사용한 9개 미니게임 통합 구조를 IMicrogame, MicrogameBase, template creator 중심으로 축약합니다.</p>
+            <ul>
+              <li>Prefab 기반 미니게임 실행</li>
+              <li>공통 생명주기 인터페이스</li>
+              <li>결과 보고와 게임 흐름 분리</li>
+              <li>신규 미니게임 기본 코드 생성 Editor Tool</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sample-section" aria-labelledby="roadmap-title">
+      <div class="section-heading"><p class="eyebrow">Repository roadmap</p><h2 id="roadmap-title">저장소 분리 계획</h2></div>
+      <div class="sample-list">
+        <article class="sample-item"><div class="sample-copy"><h3>1. izakoza-gameplay-samples</h3><p>가장 먼저 별도 저장소로 분리합니다. 현재 포트폴리오의 핵심 직무 적합성을 가장 강하게 증명합니다.</p></div></article>
+        <article class="sample-item"><div class="sample-copy"><h3>2. diet-unity-pipeline-sample</h3><p>툴링과 데이터 파이프라인 역량을 보여주는 보조 강점입니다. README에 before/after 병목을 명확히 적습니다.</p></div></article>
+        <article class="sample-item"><div class="sample-copy"><h3>3. pansori-microgame-framework</h3><p>게임잼 리드 경험과 빠른 통합 구조 설계 능력을 보여주는 샘플로 둡니다.</p></div></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>© 2026 Jae Won Jung</span><span>Public-safe sample strategy</span></footer>
+</body>
+</html>

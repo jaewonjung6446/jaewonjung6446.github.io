@@ -1,8 +1,20 @@
-# Jae Won Jung Portfolio
+# Jae Won Jung Portfolio Hub
 
-Unity Gameplay & Client Programmer 포트폴리오 허브입니다.
+Unity Gameplay & Client Programmer 채용 검토용 GitHub Pages 허브입니다.
 
-이 저장소는 GitHub Pages 기반 정적 포트폴리오와 채용 검토용 공개 샘플 문서를 함께 관리합니다. 상용/팀 프로젝트 원본 코드는 공개하지 않고, 공개 가능한 구조 샘플과 기술 문서로 구현 범위를 설명합니다.
+이 저장소는 **짧은 공개 입구 + 검토 가능한 코드 샘플 + 상세 Notion 문서 연결**을 목표로 합니다. 상용/팀 프로젝트 원본 코드는 공개하지 않고, 공개 가능한 구조 샘플과 기술 문서로 구현 범위를 설명합니다.
+
+## Public Routes
+
+| Route | Purpose |
+|---|---|
+| `/` | recruiter용 30초 랜딩 페이지 |
+| `/resume/` | 개인정보를 최소화한 공개 이력서 HTML |
+| `/portfolio/` | 상세 Notion 포트폴리오 연결 및 권장 읽기 순서 |
+| `/samples/` | 공개 가능한 코드 샘플 허브 |
+| `/github/` | GitHub profile cleanup / pinned repository 전략 |
+| `/demo/izakoza/` | 이자코자 Gameplay System 요약 |
+| `/demo/diet/` | DIET Unity Data Pipeline 요약 |
 
 ## Focus
 
@@ -34,7 +46,7 @@ Unity Gameplay & Client Programmer 포트폴리오 허브입니다.
 - 9개 미니게임 Prefab 기반 통합
 - 공통 생명주기 인터페이스
 - 실행 / 종료 / 결과 보고 흐름 분리
-- 신규 미니게임 템플릿 생성 Editor Tool
+- 신규 미니게임 템플릿 생성 Unity Editor Tool
 
 문서: [`samples/pansori-microgame-framework/README.md`](samples/pansori-microgame-framework/README.md)
 
@@ -49,7 +61,7 @@ Unity 내부 XML/C# 데이터를 외부 편집 가능한 `schema`, `relations`, 
 
 문서: [`samples/diet-unity-pipeline/README.md`](samples/diet-unity-pipeline/README.md)
 
-### Public Repositories
+## Public Repositories
 
 - [`unity-mcp`](https://github.com/jaewonjung6446/unity-mcp): Unity Editor와 MCP client를 연결하는 Editor automation bridge
 - [`metaverse2024`](https://github.com/jaewonjung6446/metaverse2024): AI NPC, STT/GPT/TTS, 다이어리 기능을 Unity 클라이언트 경험으로 연결한 메타버스 프로젝트
@@ -61,25 +73,35 @@ Unity 내부 XML/C# 데이터를 외부 편집 가능한 `schema`, `relations`, 
 - [`docs/github-cleanup-checklist.md`](docs/github-cleanup-checklist.md)
 - [`PROFILE_README_DRAFT.md`](PROFILE_README_DRAFT.md)
 
-## Local Structure
+## Current Structure
 
 ```text
 jaewonjung6446.github.io/
 ├── index.html
-├── styles.css
-├── script.js
-├── assets/
-├── docs/
-│   └── github-cleanup-checklist.md
+├── resume/
+│   └── index.html
+├── portfolio/
+│   └── index.html
 ├── samples/
+│   ├── index.html
 │   ├── izakoza-gameplay/
 │   ├── pansori-microgame-framework/
 │   └── diet-unity-pipeline/
-└── PROFILE_README_DRAFT.md
+├── github/
+│   └── index.html
+├── demo/
+│   ├── izakoza/
+│   └── diet/
+├── docs/
+│   └── github-cleanup-checklist.md
+├── robots.txt
+├── sitemap.xml
+└── 404.html
 ```
 
 ## Policy
 
 - 공개 가능한 샘플만 저장소에 포함합니다.
 - 상용 프로젝트 원본 코드, 비공개 팀 리소스, 에셋 원본은 포함하지 않습니다.
+- 공개 이력서에는 생년월일, 전화번호, 주소를 포함하지 않습니다.
 - 샘플 코드는 구조와 판단 기준을 보여주기 위한 축약본입니다.
